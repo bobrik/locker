@@ -66,3 +66,20 @@ Run it after all:
 ```
 node server.js
 ```
+
+## Capacity
+
+More performance tests to be done, but for now on my MacBook Air (Intel i5):
+
+```
+Clients count: 5
+Different locks to request: 10000
+Total locks to request: 50000
+Lock work time: 1ms
+
+Server CPU usage: 100%
+Server RSS memory: 70-80M (no growth after 5M requests)
+Responses per second: 15000-17000 (measuring every 5 seconds)
+```
+
+If you want more, shard your locks.
