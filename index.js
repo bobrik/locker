@@ -48,28 +48,22 @@
                 data = new Buffer(temp);
 
                 while (data.length && ((data[0] + 14) <= data.length)) {
+                    length   = data[0];
                     sequence = data.readUInt32LE(1);
+                    wait     = data.readUInt32LE(5);
+                    timeout  = data.readUInt32LE(9);
                     action   = data[13];
+                    name     = data.slice(14, length + 14).toString();
 
-                    if (currentSequence < sequence && action != LockAction.ACTION_UNLOCK) {
-                        currentSequence = sequence;
+                    currentSequence = sequence;
 
-                        length   = data[0];
-                        wait     = data.readUInt32LE(5);
-                        timeout  = data.readUInt32LE(9);
-                        name     = data.slice(14, length + 14).toString();
-
-                        if (action == LockAction.ACTION_LOCK) {
-                            lock(name, sequence, wait, timeout);
-                        } else if (action == LockAction.ACTION_UNLOCK) {
-                            unlock(sequence);
-                        }
-
-                        data = data.slice(length + 14);
-                    } else {
-                        connection.end();
-                        break;
+                    if (action == LockAction.ACTION_LOCK) {
+                        lock(name, sequence, wait, timeout);
+                    } else if (action == LockAction.ACTION_UNLOCK) {
+                        unlock(sequence);
                     }
+
+                    data = data.slice(length + 14);
                 }
             });
 
@@ -108,7 +102,7 @@
     Locker.prototype.listen = function() {
         this.server.listen.apply(this.server, arguments);
     };
-=
+
     Locker.prototype.close = function() {
         this.server.close.apply(this.server, arguments);
     };
