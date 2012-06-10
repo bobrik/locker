@@ -54,7 +54,7 @@ Then create main server file (look at `example/server.js`) and save it as `serve
 
 ```javascript
 (function() {
-    var Locker = require("../index"),
+    var Locker = require("locker-server"),
         locker = new Locker();
 
     locker.listen(4545);
