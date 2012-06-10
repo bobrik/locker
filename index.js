@@ -1,7 +1,8 @@
 (function(module) {
     var net              = require("net"),
         Lock             = require("./lib/Lock"),
-        LockQueueManager = require("./lib/LockQueuemanager");
+        LockQueueManager = require("./lib/LockQueuemanager"),
+        LockAction       = require("./lib/LockAction");
 
     function releaseLocks(locksRegistry) {
         Object.keys(locksRegistry).forEach(function(key) {
@@ -13,13 +14,13 @@
         var manager = new LockQueueManager();
 
         this.server = net.createServer(function(connection) {
+
             var locksRegistry   = {},
                 currentSequence = 0,
                 data            = new Buffer(0),
                 temp            = new Buffer(0);
 
             connection.on("error", function(error) {
-                //console.log(error);
                 connection.end();
                 releaseLocks(locksRegistry);
             });
@@ -30,10 +31,6 @@
 
             connection.on("timeout", function() {
                 releaseLocks(locksRegistry);
-            });
-
-            connection.on("connect", function() {
-                //console.log("got connection");
             });
 
             connection.on("data", function(part) {
@@ -54,7 +51,7 @@
                     sequence = data.readUInt32LE(1);
                     action   = data[13];
 
-                    if ((currentSequence < sequence && action == 1) || action == 0) {
+                    if (currentSequence < sequence && action != LockAction.ACTION_UNLOCK) {
                         currentSequence = sequence;
 
                         length   = data[0];
@@ -62,19 +59,14 @@
                         timeout  = data.readUInt32LE(9);
                         name     = data.slice(14, length + 14).toString();
 
-                        //console.log([length, wait, timeout, action, name]);
-
-                        if (action == 1) {
+                        if (action == LockAction.ACTION_LOCK) {
                             lock(name, sequence, wait, timeout);
-                        } else if (action == 0) {
+                        } else if (action == LockAction.ACTION_UNLOCK) {
                             unlock(sequence);
                         }
 
                         data = data.slice(length + 14);
-
-                        //console.log("data after all")
                     } else {
-                        //console.log("SHIT!");
                         connection.end();
                         break;
                     }
@@ -87,7 +79,7 @@
                 locksRegistry[sequence] = lock;
 
                 lock.acquire(wait, timeout, function(error) {
-                    respond(sequence, 1, error ? 0 : 1);
+                    respond(sequence, LockAction.ACTION_LOCK, error ? 0 : 1);
                 });
             };
 
@@ -98,7 +90,7 @@
                     delete locksRegistry[sequence];
                 }
 
-                respond(sequence, 0, lock && lock.release());
+                respond(sequence, LockAction.ACTION_UNLOCK, lock && lock.release());
             };
 
             function respond(sequence, action, result) {
@@ -108,7 +100,6 @@
                 response[4] = action;
                 response[5] = result ? 1 : 0;
 
-                //console.log("Written response: " + sequence + " " + action + " " + result);
                 connection.write(response, "binary");
             };
         });
@@ -117,7 +108,7 @@
     Locker.prototype.listen = function() {
         this.server.listen.apply(this.server, arguments);
     };
-
+=
     Locker.prototype.close = function() {
         this.server.close.apply(this.server, arguments);
     };
