@@ -3,7 +3,14 @@ locker - lock server written in node.js
 
 This is lock server for system that need to share and lock common resources across servers with sub-second precision.
 
-It allows to set wait timeout for lock and max execution time to limit your desire for eternal locking.
+## Features
+
+* Lock timeouts with millisecond precision:
+    * Timeout to wait for getting lock.
+    * Timeout to keep lock before releae.
+* No polling: one request to acquire, one request to release.
+* Auto-releasing locks on disconnect.
+* Pure node.js. Just awesome.
 
 ## Clients
 
