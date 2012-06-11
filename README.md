@@ -18,7 +18,7 @@ This is lock server for system that need to share and lock common resources acro
 
 [Client for node.js](https://github.com/bobrik/node-locker) is completely async.
 
-Example
+Example:
 
 ```javascript
 var Locker = require("locker"),
@@ -44,6 +44,29 @@ locker.locked("five", 2000, 3000, function(error, callback) {
     
     callback(undefined, {well: "done"});
 });
+```
+
+### PHP
+
+[Client for php](https://github.com/bobrik/php-locker).
+
+Example:
+
+```php
+require_once('Locker.php');
+
+$Locker = new \Locker\Locker("127.0.0.1", 4545);
+
+// Lock creation
+$LockOne = $Locker->createLock('example');
+
+// getting lock
+$LockOne->acquire(200, 10000);
+// doing very important stuff
+echo 'Waiting for 5 seconds..'."\n";
+sleep(5);
+// releasing lock
+$LockOne->release();
 ```
 
 ## Running
