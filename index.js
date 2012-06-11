@@ -1,7 +1,7 @@
 (function(module) {
     var net              = require("net"),
         Lock             = require("./lib/Lock"),
-        LockQueueManager = require("./lib/LockQueuemanager"),
+        LockQueueManager = require("./lib/LockQueueManager"),
         LockAction       = require("./lib/LockAction");
 
     function releaseLocks(locksRegistry) {
