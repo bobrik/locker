@@ -113,3 +113,16 @@ Responses per second: 15000-17000 (measuring every 5 seconds)
 ```
 
 If you want more, shard your locks.
+
+## Testing
+
+We use [mocha](http://visionmedia.github.com/mocha/) testing framework for this package.
+
+To run it after installation you should run the next command:
+
+```
+# after calling npm install locker-server
+npm test locker-server
+```
+
+If you want to contribute — please test your code and make sure everything still works.
