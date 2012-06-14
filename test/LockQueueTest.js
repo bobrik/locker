@@ -1,4 +1,4 @@
-(function(module) {
+(function() {
     var assert    = require("assert"),
         LockQueue = require("../lib/LockQueue"),
         Lock      = require("../lib/Lock"),
@@ -71,4 +71,4 @@
             });
         });
     });
-})(module);
+})();
