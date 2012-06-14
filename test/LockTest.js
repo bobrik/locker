@@ -5,14 +5,6 @@
 
     suite("Lock", function() {
         suite("new Lock()", function() {
-            test("new Lock() should create lock with given name", function(done) {
-                var lock = new Lock("pew", new LockQueueManager());
-
-                assert.equal("pew", lock.getName());
-
-                done();
-            });
-
             test("new Lock() should only accept LockQueueManager as manager argument", function(done) {
                 try {
                     new Lock("pew", {});
@@ -21,6 +13,16 @@
                 }
 
                 done(new Error("Invalid manager accepted"));
+            });
+        });
+
+        suite("Lock::getName", function() {
+            test("Lock::getName should return name that was passed to the constructor", function(done) {
+                var lock = new Lock("pew", new LockQueueManager());
+
+                assert.equal("pew", lock.getName());
+
+                done();
             });
         });
     });
