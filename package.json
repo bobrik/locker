@@ -3,7 +3,7 @@
   "name": "locker-server",
   "description": "lock server written in node.js",
   "keywords": ["lock", "server", "locker", "async", "shared", "distributed"],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/bobrik/locker",
   "repository": {
     "url": "git@github.com:bobrik/locker.git"
