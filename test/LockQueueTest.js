@@ -62,8 +62,8 @@
             });
         });
 
-        suite("Lock::getName", function() {
-            test("Lock::name should return name that was passed to the constructor", function(done) {
+        suite("LockQueue::getName", function() {
+            test("LockQueue::name should return name that was passed to the constructor", function(done) {
                 var queue = new LockQueue(queueName);
 
                 assert.equal(queue.getName(), queueName);
