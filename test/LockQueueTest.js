@@ -1,8 +1,9 @@
 (function() {
-    var assert    = require("assert"),
-        LockQueue = require("../lib/LockQueue"),
-        Lock      = require("../lib/Lock"),
-        queueName = "pewpewpew";
+    var assert           = require("assert"),
+        LockQueue        = require("../lib/LockQueue"),
+        LockQueueManager = require("../lib/LockQueueManager"),
+        Lock             = require("../lib/Lock"),
+        queueName        = "pewpewpew";
 
     suite("LockQueue", function() {
         function makeLockWaiting(lock) {
@@ -51,7 +52,7 @@
             });
 
             test("LockQueue size should be 1 after lock adding", function(done) {
-                var lock = makeLockWaiting(new Lock(queue.getName()));
+                var lock = makeLockWaiting(new Lock(queue.getName(), new LockQueueManager()));
 
                 queue.push(lock, function(error) {
                     assert.ok(!error);
