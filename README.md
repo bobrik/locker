@@ -69,6 +69,27 @@ sleep(5);
 $LockOne->release();
 ```
 
+### Python
+
+[Client for python](https://github.com/bobrik/pylocker)
+
+Example:
+
+```python
+from pylocker import Locker
+
+# create locker server connection
+locker = Locker("127.0.0.1", 4545)
+
+# create lock object with some nice name
+lock = locker.create_lock("fuu")
+# acquire lock, wait for it for 500ms if it's taken
+lock.acquire(500, 200)
+# do whatever you need for up to 200ms
+# and release lock
+lock.release()
+```
+
 ## Running
 
 First create a dir for locker:
