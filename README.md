@@ -137,7 +137,7 @@ If you want more, shard your locks.
 
 ## Testing
 
-We use [mocha](http://visionmedia.github.com/mocha/) testing framework for this package.
+We use [mocha](http://mochajs.org/) testing framework for this package.
 
 To run it after installation you should run the next command:
 
